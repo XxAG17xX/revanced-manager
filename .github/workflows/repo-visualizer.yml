@@ -17,6 +17,6 @@ jobs:
         with:
           output_file: "diagram.svg"
           excluded_paths: "node_modules,.github,build"
-          max_depth: 9
+          max_depth: 11
           should_push: true
           commit_message: "add:repo diagram [skip ci] "
