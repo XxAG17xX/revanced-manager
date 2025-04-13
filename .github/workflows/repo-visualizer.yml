@@ -1,25 +1,29 @@
 name: Repo Visualizer
 
 on:
-  push:
-    branches: [main] # or "dev" if that's your active branch
   workflow_dispatch:
 
 jobs:
   generate-diagram:
-    name: Generate Repo Structure Diagram
+    name: Generate Repo Diagram
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate repo structure SVG
+      - name: Generate diagram and save as artifact
+        id: make_diagram
         uses: githubocto/repo-visualizer@0.7.1
         with:
-          output_file: "diagram.svg"
-          excluded_paths: "node_modules,.github,build"
-          root_path: ""
+          output_file: "output-diagram.svg"
+          artifact_name: "revanceddiagram"  # ✅ safe name
+          should_push: false                # ⚠️ no auto-commit
           max_depth: 5
-          should_push: false
-          artifact_name: "revanced-diagram"
+          excluded_paths: "node_modules,.github,build"
+
+      - name: Upload diagram as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: revanceddiagram
+          path: output-diagram.svg
