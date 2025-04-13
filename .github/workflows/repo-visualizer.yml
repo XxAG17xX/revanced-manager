@@ -2,17 +2,24 @@ name: Repo Visualizer
 
 on:
   push:
-    branches: [main]  # or 'dev' if you’re working on a dev branch
+    branches: [main] # or "dev" if that's your active branch
+  workflow_dispatch:
 
 jobs:
-  build:
+  generate-diagram:
+    name: Generate Repo Structure Diagram
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Generate repo visualizer diagram
-        uses: githubocto/repo-visualizer@main
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate repo structure SVG
+        uses: githubocto/repo-visualizer@0.7.1
         with:
-          output_file: 'diagram.svg'
-          excluded_paths: 'test,node_modules,.github,.vscode'
-          theme: 'dark'  # or 'light'
+          output_file: "diagram.svg"
+          excluded_paths: "node_modules,.github,build"
+          root_path: ""
+          max_depth: 5
+          should_push: false
+          artifact_name: "revanced-diagram"
