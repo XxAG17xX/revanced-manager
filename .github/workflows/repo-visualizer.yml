@@ -1,0 +1,18 @@
+name: Repo Visualizer
+
+on:
+  push:
+    branches: [main]  # or 'dev' if you’re working on a dev branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate repo visualizer diagram
+        uses: githubocto/repo-visualizer@main
+        with:
+          output_file: 'diagram.svg'
+          excluded_paths: 'test,node_modules,.github,.vscode'
+          theme: 'dark'  # or 'light'
