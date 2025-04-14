@@ -64,9 +64,10 @@ class _IntAndStringPatchOptionState extends State<IntAndStringPatchOption> {
   ValueNotifier? patchOptionValue;
   String getKey() {
     if (patchOptionValue!.value != null && widget.patchOption.values != null) {
-      final List values = widget.patchOption.values!.entries
-          .where((e) => e.value == patchOptionValue!.value)
-          .toList();
+      final List values =
+          widget.patchOption.values!.entries
+              .where((e) => e.value == patchOptionValue!.value)
+              .toList();
       if (values.isNotEmpty) {
         return values.first.key;
       }
@@ -103,12 +104,13 @@ class _IntAndStringPatchOptionState extends State<IntAndStringPatchOption> {
                           ? t.patchOptionsView.requiredOption
                           : t.patchOptionsView.nullValue,
                       style: TextStyle(
-                        color: widget.patchOption.required
-                            ? Theme.of(context).colorScheme.error
-                            : Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer
-                                .withOpacity(0.6),
+                        color:
+                            widget.patchOption.required
+                                ? Theme.of(context).colorScheme.error
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer
+                                    .withOpacity(0.6),
                       ),
                     ),
                   ],
@@ -142,9 +144,10 @@ class IntStringLongListPatchOption extends StatelessWidget {
 
     String getKey(dynamic value) {
       if (value != null && patchOption.values != null) {
-        final List values = patchOption.values!.entries
-            .where((e) => e.value.toString() == value)
-            .toList();
+        final List values =
+            patchOption.values!.entries
+                .where((e) => e.value.toString() == value)
+                .toList();
         if (values.isNotEmpty) {
           return values.first.key;
         }
@@ -194,19 +197,20 @@ class IntStringLongListPatchOption extends StatelessWidget {
                           values.clear();
                           values.addAll(patchOption.value);
                         } else {
-                          values[index] = type == 'StringArray'
-                              ? newValue
-                              : type == 'IntArray'
+                          values[index] =
+                              type == 'StringArray'
+                                  ? newValue
+                                  : type == 'IntArray'
                                   ? int.parse(
-                                      newValue.toString().isEmpty
-                                          ? '0'
-                                          : newValue.toString(),
-                                    )
+                                    newValue.toString().isEmpty
+                                        ? '0'
+                                        : newValue.toString(),
+                                  )
                                   : num.parse(
-                                      newValue.toString().isEmpty
-                                          ? '0'
-                                          : newValue.toString(),
-                                    );
+                                    newValue.toString().isEmpty
+                                        ? '0'
+                                        : newValue.toString(),
+                                  );
                         }
                       }
                       patchOptionValue.value = List.from(values);
@@ -228,12 +232,14 @@ class IntStringLongListPatchOption extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       if (type == 'StringArray') {
-                        patchOptionValue.value =
-                            List.from(patchOptionValue.value)..add('');
+                        patchOptionValue.value = List.from(
+                          patchOptionValue.value,
+                        )..add('');
                         values.add('');
                       } else {
-                        patchOptionValue.value =
-                            List.from(patchOptionValue.value)..add(0);
+                        patchOptionValue.value = List.from(
+                          patchOptionValue.value,
+                        )..add(0);
                         values.add(0);
                       }
                       model.modifyOptions(values, patchOption);
@@ -279,9 +285,7 @@ class UnsupportedPatchOption extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
             t.patchOptionsView.unsupportedOption,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
       ),
@@ -337,9 +341,10 @@ class PatchOption extends StatelessWidget {
                               patchOption.description,
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onSecondaryContainer,
                               ),
                             ),
                           ],
@@ -352,10 +357,7 @@ class PatchOption extends StatelessWidget {
                             return IconButton(
                               onPressed: () {
                                 patchOptionValue.value = defaultValue;
-                                model.modifyOptions(
-                                  defaultValue,
-                                  patchOption,
-                                );
+                                model.modifyOptions(defaultValue, patchOption);
                               },
                               icon: const Icon(Icons.history),
                             );
@@ -422,56 +424,59 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
         if (widget.showDropdown &&
             (widget.patchOption.values?.isNotEmpty ?? false))
           DropdownButton<String>(
-            style: const TextStyle(
-              fontSize: 16,
-            ),
+            style: const TextStyle(fontSize: 16),
             borderRadius: BorderRadius.circular(4),
             dropdownColor: Theme.of(context).colorScheme.secondaryContainer,
             isExpanded: true,
             value: selectedKey,
-            items: widget.patchOption.values!.entries
-                .map(
-                  (e) => DropdownMenuItem(
-                    value: e.key,
-                    child: RichText(
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        text: e.key,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: ' ${e.value}',
+            items:
+                widget.patchOption.values!.entries
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e.key,
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            text: e.key,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer
-                                  .withOpacity(0.6),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.onSecondaryContainer,
                             ),
+                            children: [
+                              TextSpan(
+                                text: ' ${e.value}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondaryContainer
+                                      .withOpacity(0.6),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
+                      ),
+                    )
+                    .toList()
+                  ..add(
+                    DropdownMenuItem(
+                      value: '',
+                      child: Text(
+                        t.patchOptionsView.customValue,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.onSecondaryContainer,
+                        ),
                       ),
                     ),
                   ),
-                )
-                .toList()
-              ..add(
-                DropdownMenuItem(
-                  value: '',
-                  child: Text(
-                    t.patchOptionsView.customValue,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSecondaryContainer,
-                    ),
-                  ),
-                ),
-              ),
             onChanged: (value) {
               if (value == '') {
                 controller.text = defaultValue!;
@@ -506,10 +511,7 @@ class _TextFieldForPatchOptionState extends State<TextFieldForPatchOption> {
                 itemBuilder: (BuildContext context) {
                   return [
                     if (isListOption)
-                      PopupMenuItem(
-                        value: 'remove',
-                        child: Text(t.remove),
-                      ),
+                      PopupMenuItem(value: 'remove', child: Text(t.remove)),
                     if (isStringOption) ...[
                       PopupMenuItem(
                         value: 'file',
