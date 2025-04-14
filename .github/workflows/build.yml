@@ -26,11 +26,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate temporary files
-        run: |
-          dart run slang
-          dart run build_runner build -d
-
       - name: Analyze code
         run: flutter analyze
 
