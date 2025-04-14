@@ -19,10 +19,13 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       type: isFilled ? MaterialType.card : MaterialType.transparency,
-      color: isFilled
-          ? backgroundColor?.withOpacity(0.4) ??
-              Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.4)
-          : backgroundColor ?? Colors.transparent,
+      color:
+          isFilled
+              ? backgroundColor?.withValues(0.4) ??
+                  Theme.of(
+                    context,
+                  ).colorScheme.secondaryContainer.withValues(0.4)
+              : backgroundColor ?? Colors.transparent,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
