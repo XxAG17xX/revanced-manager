@@ -31,13 +31,11 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   Future<void> initialize() async {
     getPatchesVersion().whenComplete(() => notifyListeners());
-    patches.addAll(
-      _patcherAPI.getFilteredPatches(
-        selectedApp!.packageName,
-      ),
+    patches.addAll(_patcherAPI.getFilteredPatches(selectedApp!.packageName));
+    final List<Option> requiredNullOptions = getNullRequiredOptions(
+      patches,
+      selectedApp!.packageName,
     );
-    final List<Option> requiredNullOptions =
-        getNullRequiredOptions(patches, selectedApp!.packageName);
     patches.sort((a, b) {
       if (b.options.any((option) => requiredNullOptions.contains(option)) &&
           a.options.isEmpty) {
@@ -53,9 +51,7 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   bool isSelected(Patch patch) {
-    return selectedPatches.any(
-      (element) => element.name == patch.name,
-    );
+    return selectedPatches.any((element) => element.name == patch.name);
   }
 
   void navigateToPatchOptions(List<Option> setOptions, Patch patch) {
@@ -66,8 +62,10 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   bool areRequiredOptionsNull(BuildContext context) {
     final List<String> patchesWithNullRequiredOptions = [];
-    final List<Option> requiredNullOptions =
-        getNullRequiredOptions(selectedPatches, selectedApp!.packageName);
+    final List<Option> requiredNullOptions = getNullRequiredOptions(
+      selectedPatches,
+      selectedApp!.packageName,
+    );
     if (requiredNullOptions.isNotEmpty) {
       for (final patch in selectedPatches) {
         for (final patchOption in patch.options) {
@@ -90,22 +88,21 @@ class PatchesSelectorViewModel extends BaseViewModel {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.notice),
-        content: Text(
-          t.patchesSelectorView.setRequiredOption(
-            patches: patches.map((patch) => '• $patch').join('\n'),
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.notice),
+            content: Text(
+              t.patchesSelectorView.setRequiredOption(
+                patches: patches.map((patch) => '• $patch').join('\n'),
+              ),
+            ),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () => {Navigator.of(context).pop()},
+                child: Text(t.okButton),
+              ),
+            ],
           ),
-        ),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () => {
-              Navigator.of(context).pop(),
-            },
-            child: Text(t.okButton),
-          ),
-        ],
-      ),
     );
   }
 
@@ -125,30 +122,28 @@ class PatchesSelectorViewModel extends BaseViewModel {
   Future<void> showPatchesChangeDialog(BuildContext context) async {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.warning),
-        content: Text(
-          t.patchItem.patchesChangeWarningDialogText,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.warning),
+            content: Text(
+              t.patchItem.patchesChangeWarningDialogText,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(t.okButton),
+              ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                },
+                child: Text(t.patchItem.patchesChangeWarningDialogButton),
+              ),
+            ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(context)
-                ..pop()
-                ..pop();
-            },
-            child: Text(t.patchItem.patchesChangeWarningDialogButton),
-          ),
-        ],
-      ),
     );
   }
 
@@ -193,18 +188,19 @@ class PatchesSelectorViewModel extends BaseViewModel {
   }
 
   List<Patch> getQueriedPatches(String query) {
-    final List<Patch> patch = patches
-        .where(
-          (patch) =>
-              query.isEmpty ||
-              query.length < 2 ||
-              patch.name.toLowerCase().contains(query.toLowerCase()) ||
-              patch.name
-                  .replaceAll(RegExp(r'[^\w\s]+'), '')
-                  .toLowerCase()
-                  .contains(query.toLowerCase()),
-        )
-        .toList();
+    final List<Patch> patch =
+        patches
+            .where(
+              (patch) =>
+                  query.isEmpty ||
+                  query.length < 2 ||
+                  patch.name.toLowerCase().contains(query.toLowerCase()) ||
+                  patch.name
+                      .replaceAll(RegExp(r'[^\w\s]+'), '')
+                      .toLowerCase()
+                      .contains(query.toLowerCase()),
+            )
+            .toList();
     if (_managerAPI.areUniversalPatchesEnabled()) {
       return patch;
     } else {
@@ -229,34 +225,19 @@ class PatchesSelectorViewModel extends BaseViewModel {
       ),
       options: patch.options,
       isSelected: isSelected(patch),
-      navigateToOptions: (options) => navigateToPatchOptions(
-        options,
-        patch,
-      ),
-      onChanged: (value) => selectPatch(
-        patch,
-        value,
-        context,
-      ),
+      navigateToOptions: (options) => navigateToPatchOptions(options, patch),
+      onChanged: (value) => selectPatch(patch, value, context),
     );
   }
 
   Widget getPatchCategory(BuildContext context, String category) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10.0,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
-        padding: const EdgeInsets.only(
-          top: 10.0,
-          bottom: 10.0,
-          left: 5.0,
-        ),
+        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 5.0),
         child: Text(
           category,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
       ),
     );
@@ -301,21 +282,21 @@ class PatchesSelectorViewModel extends BaseViewModel {
 
   Future<void> loadSelectedPatches(BuildContext context) async {
     if (_managerAPI.isPatchesChangeEnabled()) {
-      final List<String>? appliedPatches = _managerAPI
-          .getPatchedApps()
-          .firstWhereOrNull(
-            (app) => app.packageName == selectedApp!.packageName,
-          )
-          ?.appliedPatches;
-      final List<String> selectedPatches = appliedPatches ??
-          await _managerAPI.getSelectedPatches(
-            selectedApp!.packageName,
-          );
+      final List<String>? appliedPatches =
+          _managerAPI
+              .getPatchedApps()
+              .firstWhereOrNull(
+                (app) => app.packageName == selectedApp!.packageName,
+              )
+              ?.appliedPatches;
+      final List<String> selectedPatches =
+          appliedPatches ??
+          await _managerAPI.getSelectedPatches(selectedApp!.packageName);
       if (selectedPatches.isNotEmpty) {
         this.selectedPatches.clear();
         this.selectedPatches.addAll(
-              patches.where((patch) => selectedPatches.contains(patch.name)),
-            );
+          patches.where((patch) => selectedPatches.contains(patch.name)),
+        );
         if (_managerAPI.isVersionCompatibilityCheckEnabled()) {
           this.selectedPatches.removeWhere((patch) => !isPatchSupported(patch));
         }

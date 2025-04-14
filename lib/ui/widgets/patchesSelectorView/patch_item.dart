@@ -46,17 +46,20 @@ class PatchItem extends StatefulWidget {
 class _PatchItemState extends State<PatchItem> {
   @override
   Widget build(BuildContext context) {
-    widget.isSelected = widget.isSelected &&
+    widget.isSelected =
+        widget.isSelected &&
         (!widget.isUnsupported ||
             !widget._managerAPI.isVersionCompatibilityCheckEnabled()) &&
         !widget.hasUnsupportedPatchOption;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Opacity(
-        opacity: widget.isUnsupported &&
-                widget._managerAPI.isVersionCompatibilityCheckEnabled() == true
-            ? 0.5
-            : 1,
+        opacity:
+            widget.isUnsupported &&
+                    widget._managerAPI.isVersionCompatibilityCheckEnabled() ==
+                        true
+                ? 0.5
+                : 1,
         child: HapticCustomCard(
           padding: EdgeInsets.only(
             top: 12,
@@ -144,9 +147,10 @@ class _PatchItemState extends State<PatchItem> {
                         overflow: TextOverflow.visible,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.onSecondaryContainer,
                         ),
                       ),
                       if (widget.description.isNotEmpty)
@@ -167,17 +171,19 @@ class _PatchItemState extends State<PatchItem> {
                                       Icons.warning_amber_outlined,
                                       size: 20.0,
                                     ),
-                                    onPressed: () =>
-                                        _showUnsupportedWarningDialog(),
+                                    onPressed:
+                                        () => _showUnsupportedWarningDialog(),
                                     style: ButtonStyle(
                                       shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           side: BorderSide(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).colorScheme.secondary,
                                           ),
                                         ),
                                       ),
@@ -212,40 +218,40 @@ class _PatchItemState extends State<PatchItem> {
   Future<void> _showUnsupportedWarningDialog() {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.warning),
-        content: Text(
-          t.patchItem.unsupportedDialogText(
-            packageVersion: widget.packageVersion,
-            supportedVersions:
-                '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.warning),
+            content: Text(
+              t.patchItem.unsupportedDialogText(
+                packageVersion: widget.packageVersion,
+                supportedVersions:
+                    '• ${widget.supportedPackageVersions.reversed.join('\n• ')}',
+              ),
+            ),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(t.okButton),
+              ),
+            ],
           ),
-        ),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
-          ),
-        ],
-      ),
     );
   }
 
   Future<void> _showUnsupportedRequiredOptionDialog() {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.notice),
-        content: Text(
-          t.patchItem.unsupportedRequiredOption,
-        ),
-        actions: <Widget>[
-          FilledButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.okButton),
+      builder:
+          (context) => AlertDialog(
+            title: Text(t.notice),
+            content: Text(t.patchItem.unsupportedRequiredOption),
+            actions: <Widget>[
+              FilledButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(t.okButton),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 }

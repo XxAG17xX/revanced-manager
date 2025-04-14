@@ -1,4 +1,3 @@
-// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:revanced_manager/app/app.locator.dart';

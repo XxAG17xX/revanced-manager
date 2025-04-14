@@ -10,8 +10,6 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  errors:
-    deprecated_member_use: ignore ignore
   exclude:
     - lib/app/app.locator.dart
     - lib/app/app.router.dart
@@ -164,9 +162,7 @@ dart_code_metrics:
     lines-of-code: 100
     maximum-nesting-level: 5
     source-lines-of-code: 50
-  metrics-exclude:
-    - C:\Users\gupta\OneDrive\Desktop\revanced-manager\lib\ui\views\patches_selector\patches_selector_view.dart
-    - C:\Users\gupta\OneDrive\Desktop\revanced-manager\lib\ui\widgets\patchesSelectorView\patch_item.dart
+  
   rules:
     - prefer-trailing-comma
     - no-boolean-literal-compare
