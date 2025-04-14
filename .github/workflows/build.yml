@@ -1,23 +1,39 @@
 name: Build
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarqube:
     name: SonarQube
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      # The analysis requires to retrieve dependencies and build successfully
-      - name: Build
+          fetch-depth: 0  # Required for accurate SonarQube analysis
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.0'  # Match this to ReVanced Manager’s pubspec.yaml
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate temporary files
         run: |
-              dart run slang   
-              dart run build_runner build -d
+          dart run slang
+          dart run build_runner build -d
+
+      - name: Analyze code
+        run: flutter analyze
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
