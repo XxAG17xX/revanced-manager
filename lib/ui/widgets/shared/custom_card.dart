@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
@@ -21,10 +23,11 @@ class CustomCard extends StatelessWidget {
       type: isFilled ? MaterialType.card : MaterialType.transparency,
       color:
           isFilled
-              ? backgroundColor?.withValues(0.4) ??
+              
+              ? backgroundColor?.withOpacity(0.4) ??
                   Theme.of(
                     context,
-                  ).colorScheme.secondaryContainer.withValues(0.4)
+                  ).colorScheme.secondaryContainer.withOpacity(0.4)
               : backgroundColor ?? Colors.transparent,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(

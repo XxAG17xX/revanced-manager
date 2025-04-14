@@ -153,3 +153,22 @@ linter:
     - use_test_throws_matchers
     - valid_regexps
     - void_checks
+# Inside your analysis_options.yaml file (add this at the end)
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-arguments: 4
+    lines-of-code: 100
+    maximum-nesting-level: 5
+    source-lines-of-code: 50
+
+  rules:
+    - prefer-trailing-comma
+    - no-boolean-literal-compare
+    - member-ordering
+    - avoid-long-methods
+    - avoid-long-parameter-list
+    - avoid-nested-conditional-expressions
+    - prefer-async-await
+
